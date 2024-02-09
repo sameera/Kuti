@@ -1,3 +1,5 @@
+using Kuti.Windows.WinAPI;
+
 namespace Kuti.Windows;
 
 static class Program
@@ -11,6 +13,6 @@ static class Program
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
-        Application.Run(new Settings());
+        Application.Run(new VirtualDesktopHelper(new TaskbarAPI()));
     }    
 }
