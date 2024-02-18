@@ -3,36 +3,37 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kuti.Windows"
         mc:Ignorable="d"
-        Title="MainWindow" Height="24" Width="100" MaxWidth="150"
-        AllowsTransparency="True" WindowStyle="None" Background="Transparent" Topmost="True" 
+        Title="Kuti " Height="24" Width="100" MaxWidth="150" WindowStyle="None" Background="Transparent" Topmost="True" 
         SizeToContent="WidthAndHeight" ResizeMode="NoResize" ShowInTaskbar="False">
     <Border Background="#AA000000"
             CornerRadius="5" Padding="2">
-    <Grid >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <!-- Width adjusts to content -->
-            <ColumnDefinition Width="*"/>
-            <!-- Takes up remaining space -->
-            <ColumnDefinition Width="Auto"/>
-            <!-- Width adjusts to content -->
-        </Grid.ColumnDefinitions>
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <!-- Width adjusts to content -->
+                <ColumnDefinition Width="*"/>
+                <!-- Takes up remaining space -->
+                <ColumnDefinition Width="Auto"/>
+                <!-- Width adjusts to content -->
+            </Grid.ColumnDefinitions>
 
-        <Label Grid.Column="0" Foreground="White" Content="←" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label Grid.Column="0" Foreground="White" Content="←" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
             <Label x:Name="CurrentDesktopName" Grid.Column="1" 
                    Foreground="White" FontWeight="Bold" FontSize="11" 
-                   HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Quit" Click="MenuItemQuit_Click" />
-                    </ContextMenu>
-                </Label.ContextMenu>
+                   HorizontalAlignment="Center" VerticalAlignment="Center" ContextMenu="{Binding ElementName=MainMenu}">
             </Label>
 
             <Label Grid.Column="2" Foreground="White" Content="→" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            
         </Grid>
     </Border>
+    <Window.ContextMenu>
+        <ContextMenu Name="MainMenu">
+            <MenuItem Header="Settings" Click="settingsMenuItem_Click" />
+            <Separator />
+            <MenuItem Header="Quit" Click="MenuItemQuit_Click" />
+        </ContextMenu>
+    </Window.ContextMenu>
 </Window>

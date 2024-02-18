@@ -1,10 +1,13 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using Kuti.Windows.Preferences;
+using Microsoft.CodeAnalysis;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -21,16 +24,22 @@ namespace Kuti.Windows;
 public partial class MainWindow : Window
 {
     private bool WasPinned = false;
+    private const int HOTKEY_ID = 9000;
 
     public MainWindow()
     {
         InitializeComponent();
 
         Loaded += MainWindow_Loaded;
-        Unloaded += (_, _) => VirtualDesktop.Switched -= VirtualDesktop_Switched;
+        Unloaded += (_, _) =>
+        {
+            VirtualDesktop.Switched -= VirtualDesktop_Switched;
+            UnregisterHotKey(new WindowInteropHelper(this).Handle, HOTKEY_ID);
+        };
         Activated += (_, _) => {
             if (WasPinned) return;
 
+            this.Pin();
             Application.Current.Pin();
             WasPinned = true;
         };
@@ -50,10 +59,29 @@ public partial class MainWindow : Window
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
+        // Following code was added to ensure that the window doesn't get lised in the Win+Tab list.
+        // However, this causes the opacity and the rounded rectangle styles to be overridden and make
+        // the window appear as a dark black rectangle. 
+        var hwnd = new WindowInteropHelper(this).Handle;
+        int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+        SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle | WS_EX_TOOLWINDOW);
+
         UpdateDesktopName(VirtualDesktop.Current.Name);
         PositionWindow();
-    }
 
+        var isHotkeyEnabled = RegisterHotKey(hwnd, HOTKEY_ID, MOD_ALT | MOD_CONTROL, (uint)KeyInterop.VirtualKeyFromKey(Key.D));
+        if (isHotkeyEnabled)
+        {
+            ComponentDispatcher.ThreadPreprocessMessage += ThreadPreprocessMessage;
+        }
+        else
+        {
+            Debug.WriteLine("Failed to register the Hot Keys.");
+            Debug.Assert(false);
+        }
+
+
+    }
 
     private void UpdateDesktopName(string name) => Dispatcher.Invoke(() => {
         CurrentDesktopName.Content = name;
@@ -88,5 +116,16 @@ public partial class MainWindow : Window
         Top = 0 + (titleBarHeight - Height)/2;
     }
 
+    private void ThreadPreprocessMessage(ref MSG msg, ref bool handled)
+    {
+        if (msg.message == WM_HOTKEY && (int)msg.wParam == HOTKEY_ID)
+        {
+            MainMenu.IsOpen = true;
+            MainMenu.Focus();
+            handled = true;
+        }
+    }
+
     private void MenuItemQuit_Click(object sender, RoutedEventArgs e) => Close();
+    private void settingsMenuItem_Click(object sender, RoutedEventArgs e) => new SettingsWindow().ShowDialog();
 }

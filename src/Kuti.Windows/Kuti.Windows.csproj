@@ -6,11 +6,19 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <AssemblyVersion>0.1.0.002</AssemblyVersion>
+    <FileVersion>0.1.0.002</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Slions.VirtualDesktop" Version="6.5.0" />
-    <PackageReference Include="Slions.VirtualDesktop.WPF" Version="6.5.0" />
+    <ProjectReference Include="..\..\contrib\VirtualDesktop\src\VirtualDesktop.WPF\VirtualDesktop.WPF.csproj">
+      <Private>True</Private>
+      <CopyLocalSatelliteAssemblies>True</CopyLocalSatelliteAssemblies>
+    </ProjectReference>
+    <ProjectReference Include="..\..\contrib\VirtualDesktop\src\VirtualDesktop\VirtualDesktop.csproj">
+      <Private>True</Private>
+      <CopyLocalSatelliteAssemblies>True</CopyLocalSatelliteAssemblies>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>

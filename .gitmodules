@@ -1,0 +1,3 @@
+[submodule "contrib/VirtualDesktop"]
+	path = contrib/VirtualDesktop
+	url = https://github.com/sameera/virtualdesktop

@@ -34,5 +34,29 @@ namespace Kuti.Windows {
                 this["MainWindowLocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MainActionsHotkeyModifiers {
+            get {
+                return ((int)(this["MainActionsHotkeyModifiers"]));
+            }
+            set {
+                this["MainActionsHotkeyModifiers"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int MainActionsHotkey {
+            get {
+                return ((int)(this["MainActionsHotkey"]));
+            }
+            set {
+                this["MainActionsHotkey"] = value;
+            }
+        }
     }
 }
