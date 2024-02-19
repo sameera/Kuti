@@ -120,8 +120,7 @@ public partial class MainWindow : Window
     {
         if (msg.message == WM_HOTKEY && (int)msg.wParam == HOTKEY_ID)
         {
-            MainMenu.IsOpen = true;
-            MainMenu.Focus();
+            new QuickActions.QuicActionsWindow().ShowDialog();
             handled = true;
         }
     }
