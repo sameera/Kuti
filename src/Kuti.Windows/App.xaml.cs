@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Kuti.Windows.VirtualDesktops;
+using System.Windows;
 using WindowsDesktop;
 
 namespace Kuti.Windows;
@@ -8,11 +9,16 @@ namespace Kuti.Windows;
 /// </summary>
 public partial class App : Application
 {
+
     protected override void OnStartup(StartupEventArgs e)
     {
+        var runtime = new Runtime();
+        runtime.Register<IDesktopsManager>(() => new DesktopsManager());
+
         base.OnStartup(e);
 
         VirtualDesktop.Configure();
     }
+
 }
 

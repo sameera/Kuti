@@ -25,14 +25,14 @@ namespace Kuti.Windows.QuickActions
     /// </summary>
     public partial class QuicActionsWindow : Window
     {
-        private readonly IDesktopsRegistry _desktopsRegistry;
         private bool isFirstKeyPress = true;
+        private readonly IDesktopsManager _desktopManager;
 
-        public QuicActionsWindow(IDesktopsRegistry? desktopsRegistry = null)
+        public QuicActionsWindow()
         {
             InitializeComponent();
 
-            _desktopsRegistry = desktopsRegistry ?? new DesktopsRegistry();
+            _desktopManager = Runtime.Current.GetInstance<IDesktopsManager>();
 
             Loaded += QuicActionsWindow_Loaded;
             KeyUp += QuicActionsWindow_KeyUp;
@@ -63,15 +63,15 @@ namespace Kuti.Windows.QuickActions
                 case Key.System:
                     break;
                 default:
-                    ExecuteCommand();
+                    AutofillDesktopName();
                     break;
 
             }
         }
 
-        private void ExecuteCommand()
+        private void AutofillDesktopName()
         {
-            var match = VirtualDesktop.GetDesktops().FirstOrDefault(d => d.Name.StartsWith(commandBox.Text, StringComparison.CurrentCultureIgnoreCase));
+            var match = _desktopManager.FindDesktop(commandBox.Text, DesktopNameMatching.StartsWith);
             if (match != null)
             {
                 int selStart = commandBox.Text.Length;
@@ -93,8 +93,8 @@ namespace Kuti.Windows.QuickActions
         private void QuicActionsWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SetForegroundWindow(new WindowInteropHelper(this).Handle);
+            commandBox.Text = _desktopManager.PreviousDesktop.Name;
             commandBox.Focus();
-            commandBox.Text = _desktopsRegistry.PreviousDesktop;
             commandBox.SelectAll();
         }
     }
