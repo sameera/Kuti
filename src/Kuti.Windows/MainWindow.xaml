@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kuti.Windows"
         mc:Ignorable="d"
-        Title="Kuti " Height="24" Width="100" MaxWidth="150" WindowStyle="None" Background="Transparent" Topmost="True" 
+        Title="Kuti " Height="24" Width="100" MaxWidth="150" WindowStyle="None" Background="{StaticResource BackgroundBrush}" Topmost="True" 
         SizeToContent="WidthAndHeight" ResizeMode="NoResize" ShowInTaskbar="False">
-    <Border Background="#AA000000"
-            CornerRadius="5" Padding="2">
+    <!-- Border Background="{StaticResource BackgroundBrush}"
+            CornerRadius="5" Padding="2" -->
         <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -21,16 +21,16 @@
 
             <Label Grid.Column="0" Foreground="White" Content="←" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <Label x:Name="CurrentDesktopName" Grid.Column="1" 
-                   Foreground="White" FontWeight="Bold" FontSize="11" 
+            <TextBlock x:Name="CurrentDesktopName" Grid.Column="1" 
+                   Foreground="{StaticResource ForegroundBrush}" FontWeight="Bold" FontSize="11" 
                    HorizontalAlignment="Center" VerticalAlignment="Center" ContextMenu="{Binding ElementName=MainMenu}">
-            </Label>
+            </TextBlock>
 
             <Label Grid.Column="2" Foreground="White" Content="→" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
-    </Border>
+    <!-- /Border -->
     <Window.ContextMenu>
-        <ContextMenu Name="MainMenu">
+        <ContextMenu Name="MainMenu" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource ForegroundBrush}">
             <MenuItem Header="Settings" Click="settingsMenuItem_Click" />
             <Separator />
             <MenuItem Header="Quit" Click="MenuItemQuit_Click" />

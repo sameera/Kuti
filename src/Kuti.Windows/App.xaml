@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:Kuti.Windows"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Preferences/Themes/DarkTheme.xaml" />
+                <ResourceDictionary Source="Preferences/Themes/CommonTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

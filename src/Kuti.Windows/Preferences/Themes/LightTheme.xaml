@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Define common  colors -->
+    <Color x:Key="BackgroundColor">#FFFFFF</Color>
+    <Color x:Key="ForegroundColor">#000000</Color>
+    <Color x:Key="BorderColor">#CCCCCC</Color>
+    <Color x:Key="AscentBackgroundColor">RoyalBlue</Color>
+    <Color x:Key="AscentForegroundColor">DarkGray</Color>
+
+</ResourceDictionary>

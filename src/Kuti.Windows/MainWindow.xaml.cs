@@ -84,7 +84,7 @@ public partial class MainWindow : Window
     }
 
     private void UpdateDesktopName(string name) => Dispatcher.Invoke(() => {
-        CurrentDesktopName.Content = name;
+        CurrentDesktopName.Text = name;
         
         // We need reposition the window as width of the window may have changed.
         PositionWindow();
