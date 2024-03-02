@@ -39,6 +39,10 @@ namespace Kuti.Windows
             }
             _instances[typeof(T)] = instance;
 
+            // Following is probably not a good idea as it would lead to incorrect use that goes
+            // undetected.
+            // if (instance.GetType() != typeof(T)) _instances[instance.GetType()] = instance;
+
             return (T)instance;
         }
     }

@@ -9,28 +9,28 @@
         SizeToContent="WidthAndHeight" ResizeMode="NoResize" ShowInTaskbar="False">
     <!-- Border Background="{StaticResource BackgroundBrush}"
             CornerRadius="5" Padding="2" -->
-        <Grid >
+        <Grid Margin="5,0,25,0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <!-- Width adjusts to content -->
                 <ColumnDefinition Width="*"/>
                 <!-- Takes up remaining space -->
-                <ColumnDefinition Width="Auto"/>
-                <!-- Width adjusts to content -->
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0" Foreground="White" Content="←" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Image Grid.Column="0" 
+               Name="DesktopIcon"
+               Width="24" 
+               Height="24" />
 
-            <TextBlock x:Name="CurrentDesktopName" Grid.Column="1" 
+        <TextBlock x:Name="CurrentDesktopName" Grid.Column="1" 
+                   TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
                    Foreground="{StaticResource ForegroundBrush}" FontWeight="Bold" FontSize="11" 
-                   HorizontalAlignment="Center" VerticalAlignment="Center" ContextMenu="{Binding ElementName=MainMenu}">
-            </TextBlock>
-
-            <Label Grid.Column="2" Foreground="White" Content="→" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </Grid>
+                   HorizontalAlignment="Left" VerticalAlignment="Center" ContextMenu="{Binding ElementName=MainMenu}">
+        </TextBlock>
+    </Grid>
     <!-- /Border -->
     <Window.ContextMenu>
-        <ContextMenu Name="MainMenu" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource ForegroundBrush}">
+        <ContextMenu Name="MainMenu">
             <MenuItem Header="Settings" Click="settingsMenuItem_Click" />
             <Separator />
             <MenuItem Header="Quit" Click="MenuItemQuit_Click" />

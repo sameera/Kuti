@@ -1,34 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Kuti.Windows.QuickActions;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Kuti.Windows.Preferences;
 
 /// <summary>
 /// Interaction logic for HotkeysPage.xaml
 /// </summary>
-public partial class HotkeysPage : UserControl
+public partial class HotkeysPage : UserControl, IPreferencesPage
 {
-    private bool _isWindowsKeyDown = false;
 
-    public HotkeysPage()
+    private bool _isWindowsKeyDown = false;
+    private ModifierKeys _selectedModifiers = ModifierKeys.None;
+    private Key _selectedKey = Key.None;
+
+    private readonly IHotkeyManager _hotkeyManager;
+
+    public HotkeysPage(IHotkeyManager hotKeyManager)
     {
         InitializeComponent();
+
+        _hotkeyManager = hotKeyManager;
+        (_selectedModifiers, _selectedKey) = hotKeyManager.GetHotkeys();
 
         menuHotKeyBox.PreviewKeyDown += MenuHotKeyBox_PreviewKeyDown;
         menuHotKeyBox.PreviewKeyUp += MenuHotKeyBox_PreviewKeyUp;
         menuHotKeyBox.KeyDown += MenuHotKeyBox_KeyDown;
+
+        menuHotKeyBox.Loaded += (_, _) => {
+            menuHotKeyBox.Text = hotKeyManager.GetKeyDisplayString(_selectedModifiers, _selectedKey);
+        };
     }
 
     private void MenuHotKeyBox_PreviewKeyUp(object sender, KeyEventArgs e)
@@ -45,6 +48,7 @@ public partial class HotkeysPage : UserControl
         {
             _isWindowsKeyDown = true;
         }
+
         // Prevent the text box from handling some key presses (e.g., space, backspace, etc.)
         else if (e.Key == Key.Space || e.Key == Key.Back || e.Key == Key.Delete ||
             e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Up || e.Key == Key.Down ||
@@ -57,21 +61,45 @@ public partial class HotkeysPage : UserControl
 
     private void MenuHotKeyBox_KeyDown(object sender, KeyEventArgs e)
     {
-        string modifiers = string.Empty;
+        _selectedModifiers = Keyboard.Modifiers;
+        _selectedKey = e.Key;
 
-        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-            modifiers += "Ctrl+";
-        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
-            modifiers += "Shift+";
-        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
-            modifiers += "Alt+";
         if (_isWindowsKeyDown)
-            modifiers += "Windows+";
+        {
+            _selectedModifiers |= ModifierKeys.Windows;
+        }
 
-        menuHotKeyBox.Text = modifiers + GetKeyName(e.Key);
+        menuHotKeyBox.Text = _hotkeyManager.GetKeyDisplayString(
+            _selectedModifiers, 
+            _selectedKey);
 
         e.Handled = true;
     }
 
-    private string GetKeyName(Key key) => new KeyConverter().ConvertToString(key) ?? string.Empty;
+    public bool OnApply()
+    {
+        var keyConverter = new KeyConverter();
+
+        if (_isWindowsKeyDown)
+        {
+            _selectedModifiers |= ModifierKeys.Windows;
+        }
+
+        if (_hotkeyManager.RegisterHotkeys(_selectedModifiers, _selectedKey))
+        {
+            var settings = UserSettings.Default;
+            settings.MainActionsHotkey = (int)_selectedKey;
+            settings.MainActionsHotkeyModifiers = (int)_selectedModifiers;
+            return true;
+        }
+        else
+        {
+            MessageBox.Show(
+                "Hotkey Assignment Failed", "Unable to register the specified hot key.\n" +
+                "It may already be registered by another application.", 
+                MessageBoxButton.OK, 
+                MessageBoxImage.Warning);
+            return false;
+        }
+    }
 }

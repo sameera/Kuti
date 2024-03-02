@@ -3,6 +3,7 @@ using Windows.UI;
 using System.Windows;
 using Windows.UI.ViewManagement;
 using WindowsDesktop;
+using Kuti.Windows.QuickActions;
 
 namespace Kuti.Windows;
 
@@ -16,11 +17,17 @@ public partial class App : Application
     {
         var runtime = new Runtime();
         runtime.Register<IDesktopsManager>(() => new DesktopsManager());
+        runtime.Register(() => new MainWindow());
+        runtime.Register<IHotkeyManager>(r => new HotkeyManager());
 
         base.OnStartup(e);
 
         SetAppTheme();
         VirtualDesktop.Configure();
+
+        var mainWindow = runtime.GetInstance<MainWindow>();
+        mainWindow.Loaded += (_, _) => runtime.GetInstance<IHotkeyManager>().Initialize(mainWindow);
+        mainWindow.Show();
     }
 
     private void SetAppTheme()
@@ -40,12 +47,6 @@ public partial class App : Application
             darkThemeDict.Source = new Uri("Kuti.Windows;component/Preferences/Themes/DarkTheme.xaml", UriKind.Relative);
             Application.Current.Resources.MergedDictionaries.Add(darkThemeDict);
         }
-
-        settings.ColorValuesChanged += (sender, args) =>
-        {
-            var isLightTheme = IsColorLight(settings.GetColorValue(UIColorType.Background));
-            // TODO Change app theme accordingly
-        };
 
         // From https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/apply-windows-themes?WT.mc_id=DT-MVP-5003978#know-when-dark-mode-is-enabled
         static bool IsColorLight(Color clr)

@@ -1,4 +1,6 @@
 ﻿using Kuti.Windows.Preferences;
+using Kuti.Windows.QuickActions;
+using Kuti.Windows.WindowsAPI;
 using Microsoft.CodeAnalysis;
 using System.Diagnostics;
 using System.Text;
@@ -24,18 +26,17 @@ namespace Kuti.Windows;
 public partial class MainWindow : Window
 {
     private bool WasPinned = false;
-    private const int HOTKEY_ID = 9000;
 
     public MainWindow()
     {
         InitializeComponent();
 
         Loaded += MainWindow_Loaded;
-        Unloaded += (_, _) =>
-        {
+
+        Unloaded += (_, _) => {
             VirtualDesktop.Switched -= VirtualDesktop_Switched;
-            UnregisterHotKey(new WindowInteropHelper(this).Handle, HOTKEY_ID);
         };
+
         Activated += (_, _) => {
             if (WasPinned) return;
 
@@ -68,19 +69,6 @@ public partial class MainWindow : Window
 
         UpdateDesktopName(VirtualDesktop.Current.Name);
         PositionWindow();
-
-        var isHotkeyEnabled = RegisterHotKey(hwnd, HOTKEY_ID, MOD_ALT | MOD_CONTROL, (uint)KeyInterop.VirtualKeyFromKey(Key.D));
-        if (isHotkeyEnabled)
-        {
-            ComponentDispatcher.ThreadPreprocessMessage += ThreadPreprocessMessage;
-        }
-        else
-        {
-            Debug.WriteLine("Failed to register the Hot Keys.");
-            Debug.Assert(false);
-        }
-
-
     }
 
     private void UpdateDesktopName(string name) => Dispatcher.Invoke(() => {
@@ -116,15 +104,6 @@ public partial class MainWindow : Window
         Top = 0 + (titleBarHeight - Height)/2;
     }
 
-    private void ThreadPreprocessMessage(ref MSG msg, ref bool handled)
-    {
-        if (msg.message == WM_HOTKEY && (int)msg.wParam == HOTKEY_ID)
-        {
-            new QuickActions.QuicActionsWindow().ShowDialog();
-            handled = true;
-        }
-    }
-
     private void MenuItemQuit_Click(object sender, RoutedEventArgs e) => Close();
-    private void settingsMenuItem_Click(object sender, RoutedEventArgs e) => new SettingsWindow().ShowDialog();
+    private void settingsMenuItem_Click(object sender, RoutedEventArgs e) => new PreferencesWindow().ShowDialog();
 }

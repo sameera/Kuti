@@ -58,5 +58,17 @@ namespace Kuti.Windows {
                 this["MainActionsHotkey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MainActionHotkeyIncludesWinKey {
+            get {
+                return ((bool)(this["MainActionHotkeyIncludesWinKey"]));
+            }
+            set {
+                this["MainActionHotkeyIncludesWinKey"] = value;
+            }
+        }
     }
 }
