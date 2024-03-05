@@ -93,9 +93,26 @@ namespace Kuti.Windows.QuickActions
         private void QuicActionsWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SetForegroundWindow(new WindowInteropHelper(this).Handle);
+            CenterInMainMonitor();
+
             commandBox.Text = _desktopManager.PreviousDesktop.Name;
             commandBox.Focus();
             commandBox.SelectAll();
+        }
+
+        private void CenterInMainMonitor()
+        {
+            // Calculate the scale ratio
+            double scaleRatioX = SystemParameters.VirtualScreenWidth / SystemParameters.PrimaryScreenWidth;
+            double scaleRatioY = SystemParameters.VirtualScreenHeight / SystemParameters.PrimaryScreenHeight;
+
+            // Calculate the window position to center it
+            double centerX = (SystemParameters.VirtualScreenWidth - Width) / 2;
+            double centerY = (SystemParameters.VirtualScreenHeight - Height) / 2;
+
+            // Set window position
+            Left = (SystemParameters.VirtualScreenLeft + centerX) / scaleRatioX;
+            Top = (SystemParameters.VirtualScreenTop + centerY) / scaleRatioY;
         }
     }
 }
