@@ -1,11 +1,9 @@
 ﻿using Kuti.Windows.WindowsAPI;
-using System;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using Windows.Web.Syndication;
 
 namespace Kuti.Windows.QuickActions;
 
