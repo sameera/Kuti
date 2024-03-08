@@ -5,22 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kuti.Windows.QuickActions"
         mc:Ignorable="d"
-        Topmost="True" AllowsTransparency="True" Background="Transparent"
-        Title="Quick Actions" Height="50" Width="400" WindowStartupLocation="Manual" ResizeMode="NoResize" WindowStyle="None">
-    <Border Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="15" Padding="2">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Border Grid.Column="0" CornerRadius="15" Background="{StaticResource AscentBackgroundBrush}" BorderBrush="{StaticResource AscentBackgroundBrush}" Margin="3,2,2,2">
-                <TextBlock Text="Switch to" FontSize="14" Foreground="{StaticResource AscentForegroundBrush}" TextAlignment="Center" VerticalAlignment="Center" Margin="7,0,7,0"/>
-            </Border>
-            <TextBox Grid.Column="1" Name="commandBox" 
-                 HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="2,2,10,2"
-                 Foreground="{StaticResource ForegroundBrush}" Background="{StaticResource BackgroundBrush}" 
-                 BorderBrush="Transparent" BorderThickness="0"
-                 FontSize="24" />
-        </Grid>
-    </Border>
+        Topmost="True" AllowsTransparency="True" Background="#CC000000"
+        Title="Quick Actions" WindowStartupLocation="Manual" Height="200" ResizeMode="NoResize" WindowStyle="None" WindowState="Maximized">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Border Grid.Row="1" Grid.Column="1" Height="50" Width="400" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="15" Padding="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" CornerRadius="15" Background="{StaticResource AscentBackgroundBrush}" BorderBrush="{StaticResource AscentBackgroundBrush}" Margin="3,2,2,2">
+                    <TextBlock Text="Switch to" FontSize="14" Foreground="{StaticResource AscentForegroundBrush}" TextAlignment="Center" VerticalAlignment="Center" Margin="7,0,7,0"/>
+                </Border>
+                <TextBox Grid.Column="1" Name="commandBox" 
+                     HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="2,2,10,2"
+                     Foreground="{StaticResource ForegroundBrush}" Background="{StaticResource BackgroundBrush}" 
+                     BorderBrush="Transparent" BorderThickness="0"
+                     FontSize="24" />
+            </Grid>
+        </Border>
+    </Grid>
 </Window>
