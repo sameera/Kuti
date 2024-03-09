@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WindowsDesktop;
+using WindowsDesktop.Properties;
 
 namespace Kuti.Windows.VirtualDesktops
 {
@@ -42,7 +45,18 @@ namespace Kuti.Windows.VirtualDesktops
             }
         }
 
-        public void Configure() => VirtualDesktop.Configure();
+        public void Configure()
+        {
+            var assemblyDirPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "codoxide.com",
+                Assembly.GetExecutingAssembly().GetName().Name ?? "Kuti",
+                "assemblies"
+            );
+            VirtualDesktop.Configure(new () {
+                CompiledAssemblySaveDirectory = new (assemblyDirPath)
+            });
+        }
 
         public VirtualDesktop? FindDesktop(string name, DesktopNameMatching matching = DesktopNameMatching.Exact)
         {

@@ -14,10 +14,12 @@
     <ProjectReference Include="..\..\contrib\VirtualDesktop\src\VirtualDesktop.WPF\VirtualDesktop.WPF.csproj">
       <Private>True</Private>
       <CopyLocalSatelliteAssemblies>True</CopyLocalSatelliteAssemblies>
+      <EmbedInteropTypes></EmbedInteropTypes>
     </ProjectReference>
     <ProjectReference Include="..\..\contrib\VirtualDesktop\src\VirtualDesktop\VirtualDesktop.csproj">
       <Private>True</Private>
       <CopyLocalSatelliteAssemblies>True</CopyLocalSatelliteAssemblies>
+      <EmbedInteropTypes></EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
 

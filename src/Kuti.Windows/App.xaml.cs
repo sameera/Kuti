@@ -23,7 +23,7 @@ public partial class App : Application
         base.OnStartup(e);
 
         SetAppTheme();
-        VirtualDesktop.Configure();
+        runtime.GetInstance<IDesktopsManager>().Configure();
 
         var mainWindow = runtime.GetInstance<MainWindow>();
         mainWindow.Loaded += (_, _) => runtime.GetInstance<IHotkeyManager>().Initialize(mainWindow);
