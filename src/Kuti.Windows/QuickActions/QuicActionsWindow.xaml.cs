@@ -1,6 +1,5 @@
 ﻿using Kuti.Windows.VirtualDesktops;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using WindowsDesktop;
