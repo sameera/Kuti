@@ -19,6 +19,8 @@ namespace Kuti.Windows.VirtualDesktops
 
         void Configure();
 
+        IEnumerable<VirtualDesktop> VirtualDesktops { get; }
+
         VirtualDesktop? FindDesktop(string name, DesktopNameMatching matching = DesktopNameMatching.Exact);
     }
 
@@ -44,6 +46,8 @@ namespace Kuti.Windows.VirtualDesktops
                 return _previousDesktop;
             }
         }
+
+        public IEnumerable<VirtualDesktop> VirtualDesktops => VirtualDesktop.GetDesktops();
 
         public void Configure()
         {
@@ -72,8 +76,6 @@ namespace Kuti.Windows.VirtualDesktops
 
         public DesktopsManager()
         {
-            string currentDesktop = VirtualDesktop.Current.Name;
-
             VirtualDesktop.CurrentChanged += (s, e) => {
                 _previousDesktop = e.OldDesktop;
                 if (CurrentChanged != null) CurrentChanged(s, e);

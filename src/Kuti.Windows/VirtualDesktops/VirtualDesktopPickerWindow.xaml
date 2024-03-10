@@ -1,0 +1,29 @@
+﻿<Window x:Class="Kuti.Windows.VirtualDesktops.VirtualDesktopPickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kuti.Windows.VirtualDesktops"
+        mc:Ignorable="d"
+        Title="VirtualDesktopPickerWindow" WindowStyle="None" ResizeMode="CanResize" SizeToContent="Height" Width="300" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="Manual">
+        <Border CornerRadius="15" Background="{StaticResource BackgroundBrush}" 
+                BorderBrush="{StaticResource BackgroundBrush}"
+                BorderThickness="1"
+                Height="Auto"
+                Padding="5">
+            <Grid>
+            <ListView x:Name="DesktopsListView"
+                    ItemsSource="{Binding AvailableDesktops}" DisplayMemberPath="Name"
+                    SelectedItem="{Binding SelectedDesktop, Mode=TwoWay}"
+                    ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                    Padding="5"
+                    Height="Auto"
+                    Background="{StaticResource BackgroundBrush}" 
+                    Foreground="{StaticResource ForegroundBrush}"
+                    BorderThickness="0" BorderBrush="Transparent"
+                    FontSize="14"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+        </Grid>
+        </Border>
+</Window>

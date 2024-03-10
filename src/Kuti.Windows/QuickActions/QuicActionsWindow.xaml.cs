@@ -1,5 +1,6 @@
 ﻿using Kuti.Windows.VirtualDesktops;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using WindowsDesktop;
@@ -16,6 +17,8 @@ namespace Kuti.Windows.QuickActions
         private bool isFirstKeyPress = true;
         private readonly IDesktopsManager _desktopManager;
 
+        private VirtualDesktopPickerWindow? _desktopPicker;
+
         public QuicActionsWindow()
         {
             InitializeComponent();
@@ -30,7 +33,7 @@ namespace Kuti.Windows.QuickActions
 
         private void QuicActionsWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (isFirstKeyPress && e.Key != Key.Enter) 
+            if (isFirstKeyPress && e.Key != Key.Enter && e.Key != Key.Down) 
             { 
                 isFirstKeyPress = false;
                 commandBox.Text = string.Empty;
@@ -46,6 +49,9 @@ namespace Kuti.Windows.QuickActions
                 case Key.Enter:
                     FocusDesktopByName(commandBox.Text);
                     break;
+                case Key.Down:
+                    ShowDesktopPicker();
+                    break;
                 case Key.Back:
                 case Key.Delete:
                 case Key.System:
@@ -55,6 +61,36 @@ namespace Kuti.Windows.QuickActions
                     break;
 
             }
+        }
+
+        private void ShowDesktopPicker()
+        {
+            var selectedDesktop = _desktopManager.FindDesktop(commandBox.Text, DesktopNameMatching.StartsWith);
+            (_desktopPicker ??= new VirtualDesktopPickerWindow(_desktopManager)).SelectedDesktop = selectedDesktop;
+
+            // Get the screen coordinates of the bottom left corner of the text box
+            Point bottomLeftCorner = new Point(0, commandBox.ActualHeight);
+            Point screenCoordinates = commandBox.PointToScreen(bottomLeftCorner);
+
+            // Adjust the position of the new window
+            _desktopPicker.Left = screenCoordinates.X;
+            _desktopPicker.Top = screenCoordinates.Y;
+
+            _desktopPicker.Owner = this;
+            _desktopPicker.Closed += (_, _) => {
+                if (_desktopPicker.SwitchToSelection && _desktopPicker.SelectedDesktop != null)
+                {
+                    _desktopPicker.SelectedDesktop.Switch();
+                    Close();
+                }
+                else
+                {
+                    commandBox.Focus();
+                }
+                _desktopPicker = null;
+            };
+            _desktopPicker.Show();
+            _desktopPicker.Focus();
         }
 
         private void AutofillDesktopName()

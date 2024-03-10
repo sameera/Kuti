@@ -31,6 +31,8 @@ internal class HotkeyManager : IHotkeyManager
 
     private nint? _targetHwnd;
 
+    private QuicActionsWindow? _quickActionsWindow;
+
     public void Initialize(Window window)
     {            
         _targetHwnd = new WindowInteropHelper(window).Handle;
@@ -118,7 +120,8 @@ internal class HotkeyManager : IHotkeyManager
     {
         if (msg.message == User32.WM_HOTKEY && (int)msg.wParam == HOTKEY_ID)
         {
-            new QuicActionsWindow().ShowDialog();
+            (_quickActionsWindow ??= new QuicActionsWindow()).Closed += (_, _) => _quickActionsWindow = null;
+            _quickActionsWindow.ShowDialog();
             handled = true;
         }
     }

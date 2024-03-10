@@ -7,4 +7,9 @@
     <Color x:Key="AscentBackgroundColor">RoyalBlue</Color>
     <Color x:Key="AscentForegroundColor">DarkGray</Color>
 
+    <!-- Light Theme -->
+    <LinearGradientBrush x:Key="ListItemSelectedBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#993399" Offset="0"/>
+        <GradientStop Color="#660066" Offset="1"/>
+    </LinearGradientBrush>
 </ResourceDictionary>
