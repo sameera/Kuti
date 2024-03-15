@@ -58,7 +58,7 @@ public partial class App : Application
         var assembly = Assembly.GetExecutingAssembly();
         string? company = assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
         string? productName = assembly.GetCustomAttribute<AssemblyProductAttribute>()?.Product;
-        return new AppMetadata(company, productName);
+        return new AppMetadata(productName, company);
     }
 
     private void SetAppTheme()
