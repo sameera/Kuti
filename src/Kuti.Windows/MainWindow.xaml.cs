@@ -1,4 +1,5 @@
 ﻿using Kuti.Windows.Preferences;
+using Serilog;
 using System.Windows;
 using System.Windows.Interop;
 using WindowsDesktop;
@@ -13,10 +14,13 @@ namespace Kuti.Windows;
 public partial class MainWindow : Window
 {
     private bool WasPinned = false;
+    private readonly ILogger _logger;
 
     public MainWindow()
     {
         InitializeComponent();
+
+        _logger = Runtime.Current.GetInstance<ILogger>();
 
         Loaded += MainWindow_Loaded;
 
@@ -27,6 +31,7 @@ public partial class MainWindow : Window
         Activated += (_, _) => {
             if (WasPinned) return;
 
+            _logger.Debug("Pinning myself to all desktops.");
             this.Pin();
             Application.Current.Pin();
             WasPinned = true;
@@ -69,26 +74,29 @@ public partial class MainWindow : Window
     {
         if (UserSettings.Default.MainWindowLocation.X > 0 && UserSettings.Default.MainWindowLocation.Y > 0)
         {
-            this.Top = UserSettings.Default.MainWindowLocation.Y;
-            this.Left = UserSettings.Default.MainWindowLocation.X;
-            return;
+            Top = UserSettings.Default.MainWindowLocation.Y;
+            Left = UserSettings.Default.MainWindowLocation.X;
+        }
+        else
+        {
+            int titleBarHeight = GetSystemMetrics(SM_CYSIZE);
+            // Calculate the offset for the title bar buttons
+            int offset = GetSystemMetrics(SM_CXSIZEFRAME) +
+                         GetSystemMetrics(SM_CXPADDEDBORDER) +
+                         titleBarHeight * 5; 
+                        // Make room for titlebar buttons that might be behind this window (min, max, close) and add some buffer for any other buttons
+                        // a 3rd party app might have added.
+
+            // Get the screen width and height
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
+            double screenHeight = SystemParameters.PrimaryScreenHeight;
+
+            // Set the window position
+            Left = screenWidth - Width - offset;
+            Top = 0 + (titleBarHeight - Height)/2;
         }
 
-        int titleBarHeight = GetSystemMetrics(SM_CYSIZE);
-        // Calculate the offset for the title bar buttons
-        int offset = GetSystemMetrics(SM_CXSIZEFRAME) +
-                     GetSystemMetrics(SM_CXPADDEDBORDER) +
-                     titleBarHeight * 5; 
-                    // Make room for titlebar buttons that might be behind this window (min, max, close) and add some buffer for any other buttons
-                    // a 3rd party app might have added.
-
-        // Get the screen width and height
-        double screenWidth = SystemParameters.PrimaryScreenWidth;
-        double screenHeight = SystemParameters.PrimaryScreenHeight;
-
-        // Set the window position
-        Left = screenWidth - Width - offset;
-        Top = 0 + (titleBarHeight - Height)/2;
+        _logger.Verbose(l => l.Verbose("Positioning the window at {Left}:{Top}", Left, Top));
     }
 
     private void MenuItemQuit_Click(object sender, RoutedEventArgs e) => Close();

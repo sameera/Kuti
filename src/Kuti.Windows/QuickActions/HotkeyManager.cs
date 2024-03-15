@@ -1,4 +1,5 @@
 ﻿using Kuti.Windows.WindowsAPI;
+using Serilog;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
@@ -26,6 +27,8 @@ internal class HotkeyManager : IHotkeyManager
 
     private const int DEFAULT_MAIN_ACTION_KEY = 47; // 'D'
     private const int DEFAULT_MAIN_ACTION_MODIFIERS = 3; // Ctl+Alt
+
+    private readonly ILogger _logger = Runtime.Current.GetInstance<ILogger>();
 
     private bool _isListening = false;
 
@@ -66,6 +69,11 @@ internal class HotkeyManager : IHotkeyManager
     {
         UnregisterHotkeys();
 
+        _logger.Debug(l => l.Debug(
+                "Registering hotkeys: ", 
+                GetKeyDisplayString(modifiers, key))
+            );
+
         bool isRegisterd = User32.RegisterHotKey(
                 GetHandle(), 
                 HOTKEY_ID, 
@@ -79,8 +87,7 @@ internal class HotkeyManager : IHotkeyManager
         }
         else if (!isRegisterd)
         {
-            Debug.WriteLine("Failed to register the Hot Keys.");
-            Debug.Assert(false);
+            _logger.Error("Failed to register the Hot Keys.");
         }
         return isRegisterd;
     }
@@ -120,6 +127,8 @@ internal class HotkeyManager : IHotkeyManager
     {
         if (msg.message == User32.WM_HOTKEY && (int)msg.wParam == HOTKEY_ID)
         {
+
+
             (_quickActionsWindow ??= new QuicActionsWindow()).Closed += (_, _) => _quickActionsWindow = null;
             _quickActionsWindow.ShowDialog();
             handled = true;

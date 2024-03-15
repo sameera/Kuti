@@ -1,4 +1,6 @@
-﻿namespace Kuti.Windows
+﻿using System.Reflection;
+
+namespace Kuti.Windows
 {
     public class Runtime
     {

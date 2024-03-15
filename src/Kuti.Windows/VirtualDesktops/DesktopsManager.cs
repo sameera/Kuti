@@ -17,7 +17,7 @@ namespace Kuti.Windows.VirtualDesktops
 
         event EventHandler<VirtualDesktopChangedEventArgs>? CurrentChanged;
 
-        void Configure();
+        void Configure(AppMetadata appMetadata);
 
         IEnumerable<VirtualDesktop> VirtualDesktops { get; }
 
@@ -41,7 +41,8 @@ namespace Kuti.Windows.VirtualDesktops
                 if (_previousDesktop == null)
                 {
                     string currentDesktopName = CurrentDesktop.Name;
-                    _previousDesktop = VirtualDesktop.GetDesktops().FirstOrDefault(d => !currentDesktopName.Equals(d.Name)) ?? CurrentDesktop;
+                    _previousDesktop = VirtualDesktop.GetDesktops()
+                            .FirstOrDefault(d => !currentDesktopName.Equals(d.Name)) ?? CurrentDesktop;
                 }
                 return _previousDesktop;
             }
@@ -49,14 +50,15 @@ namespace Kuti.Windows.VirtualDesktops
 
         public IEnumerable<VirtualDesktop> VirtualDesktops => VirtualDesktop.GetDesktops();
 
-        public void Configure()
+        public void Configure(AppMetadata appMetadata)
         {
             var assemblyDirPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "codoxide.com",
-                Assembly.GetExecutingAssembly().GetName().Name ?? "Kuti",
+                appMetadata.Company,
+                appMetadata.ProductName,
                 "assemblies"
             );
+
             VirtualDesktop.Configure(new () {
                 CompiledAssemblySaveDirectory = new (assemblyDirPath)
             });
