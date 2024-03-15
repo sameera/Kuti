@@ -32,6 +32,9 @@ public partial class App : Application
             .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day)
             .CreateLogger();
 
+        AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            Log.Fatal("Unhandled from {sender}: {@error}", e.ExceptionObject);
+
         var runtime = new Runtime();
         runtime.Register<IDesktopsManager>(() => new DesktopsManager());
         runtime.Register(() => new MainWindow());
