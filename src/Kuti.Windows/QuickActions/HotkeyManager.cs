@@ -34,7 +34,7 @@ internal class HotkeyManager : IHotkeyManager
 
     private nint? _targetHwnd;
 
-    private QuicActionsWindow? _quickActionsWindow;
+    private bool _isQuickActionsWindowVisible = false;
 
     public void Initialize(Window window)
     {            
@@ -125,13 +125,16 @@ internal class HotkeyManager : IHotkeyManager
 
     private void ThreadPreprocessMessage(ref MSG msg, ref bool handled)
     {
-        if (msg.message == User32.WM_HOTKEY && (int)msg.wParam == HOTKEY_ID)
+        bool isQuickActionsHotkey = msg.message == User32.WM_HOTKEY && (int)msg.wParam == HOTKEY_ID;
+        if (isQuickActionsHotkey && !_isQuickActionsWindowVisible)
         {
-
-
-            (_quickActionsWindow ??= new QuicActionsWindow()).Closed += (_, _) => _quickActionsWindow = null;
-            _quickActionsWindow.ShowDialog();
             handled = true;
+
+            var quickActionsWindow = new QuicActionsWindow();
+            quickActionsWindow.Closed += (_, _) => _isQuickActionsWindowVisible = false;
+
+            _isQuickActionsWindowVisible = true;
+            quickActionsWindow.ShowDialog();
         }
     }
 

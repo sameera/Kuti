@@ -6,8 +6,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <AssemblyVersion>0.1.0.002</AssemblyVersion>
-    <FileVersion>0.1.0.002</FileVersion>
+    <AssemblyVersion>0.1.1.000</AssemblyVersion>
+    <FileVersion>0.1.1.000</FileVersion>
     <Company>Codoxide.com</Company>
     <Product>Kuti</Product>
   </PropertyGroup>
