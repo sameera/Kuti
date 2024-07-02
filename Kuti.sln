@@ -17,6 +17,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDesktop", "contrib\V
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDesktop.WPF", "contrib\VirtualDesktop\src\VirtualDesktop.WPF\VirtualDesktop.WPF.csproj", "{2A02032D-D993-46AA-AFF3-7715ACFCB885}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuti.Windows.Settings", "src\Kuti.Windows.Settings\Kuti.Windows.Settings.csproj", "{755FAFBE-AD03-4308-89F9-59479A648340}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuti.Windows.Settings.Tests", "tests\Kuti.Windows.Settings\Kuti.Windows.Settings.Tests.csproj", "{E0812CD8-BAB1-4965-A06C-505C23C53BBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuti.Windows.Common", "src\Kuti.Windows.Common\Kuti.Windows.Common.csproj", "{84176F59-3ADC-42A2-973D-32FFA3C24783}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuti.Windows.Common.Tests", "tests\Kuti.Windows.Common\Kuti.Windows.Common.Tests.csproj", "{4E3157FC-CC77-4830-9B24-BC1997D5D8FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +47,22 @@ Global
 		{2A02032D-D993-46AA-AFF3-7715ACFCB885}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A02032D-D993-46AA-AFF3-7715ACFCB885}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A02032D-D993-46AA-AFF3-7715ACFCB885}.Release|Any CPU.Build.0 = Release|Any CPU
+		{755FAFBE-AD03-4308-89F9-59479A648340}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{755FAFBE-AD03-4308-89F9-59479A648340}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{755FAFBE-AD03-4308-89F9-59479A648340}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{755FAFBE-AD03-4308-89F9-59479A648340}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0812CD8-BAB1-4965-A06C-505C23C53BBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0812CD8-BAB1-4965-A06C-505C23C53BBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0812CD8-BAB1-4965-A06C-505C23C53BBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0812CD8-BAB1-4965-A06C-505C23C53BBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84176F59-3ADC-42A2-973D-32FFA3C24783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84176F59-3ADC-42A2-973D-32FFA3C24783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84176F59-3ADC-42A2-973D-32FFA3C24783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84176F59-3ADC-42A2-973D-32FFA3C24783}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E3157FC-CC77-4830-9B24-BC1997D5D8FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E3157FC-CC77-4830-9B24-BC1997D5D8FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E3157FC-CC77-4830-9B24-BC1997D5D8FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E3157FC-CC77-4830-9B24-BC1997D5D8FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +72,10 @@ Global
 		{4D8F424E-9772-452A-95AC-D2D037A72FA2} = {E5053870-8037-4052-96AF-8F0928EF41F3}
 		{6E68A962-D332-4EB0-A50E-74E70F49A349} = {6B358C54-8ACF-419C-801F-095C96CE070C}
 		{2A02032D-D993-46AA-AFF3-7715ACFCB885} = {6B358C54-8ACF-419C-801F-095C96CE070C}
+		{755FAFBE-AD03-4308-89F9-59479A648340} = {E5053870-8037-4052-96AF-8F0928EF41F3}
+		{E0812CD8-BAB1-4965-A06C-505C23C53BBC} = {2EA3A11B-9031-4FAA-859A-627AEC12E081}
+		{84176F59-3ADC-42A2-973D-32FFA3C24783} = {E5053870-8037-4052-96AF-8F0928EF41F3}
+		{4E3157FC-CC77-4830-9B24-BC1997D5D8FC} = {2EA3A11B-9031-4FAA-859A-627AEC12E081}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2994ED63-AA56-40B5-AAAB-3DCA273E335F}
