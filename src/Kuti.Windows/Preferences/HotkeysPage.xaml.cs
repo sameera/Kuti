@@ -17,6 +17,8 @@ public partial class HotkeysPage : UserControl, IPreferencesPage
 
     private readonly IHotkeyManager _hotkeyManager;
 
+    public string Title { get; } = "Hotkey Settings";
+
     public HotkeysPage(IHotkeyManager hotKeyManager)
     {
         InitializeComponent();

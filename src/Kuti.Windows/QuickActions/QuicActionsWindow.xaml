@@ -8,6 +8,24 @@
         Topmost="True" AllowsTransparency="True" Background="#CC000000"
         Title="Quick Actions" WindowStartupLocation="Manual" Height="200" 
         ResizeMode="NoResize" WindowStyle="None" WindowState="Maximized" ShowInTaskbar="False">
+    <Window.Resources>
+        <!-- Style for the circular button -->
+        <Style x:Key="CircularButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="50" />
+            <Setter Property="Height" Value="50" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse Fill="{TemplateBinding Background}" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Content="{TemplateBinding Content}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -24,6 +42,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" CornerRadius="15" Background="{StaticResource AscentBackgroundBrush}" BorderBrush="{StaticResource AscentBackgroundBrush}" Margin="3,2,2,2">
                     <TextBlock Text="Switch to" FontSize="14" Foreground="{StaticResource AscentForegroundBrush}" TextAlignment="Center" VerticalAlignment="Center" Margin="7,0,7,0"/>
@@ -33,6 +52,10 @@
                      Foreground="{StaticResource ForegroundBrush}" Background="{StaticResource BackgroundBrush}" 
                      BorderBrush="Transparent" BorderThickness="0"
                      FontSize="24" />
+                <Button Name="menuButton"  Content="▾" 
+                        Grid.Column="2" Width="24" Height="24" Style="{StaticResource CircularButtonStyle}"
+                        Background="{StaticResource AscentBackgroundBrush}"
+                        Foreground="{StaticResource AscentForegroundBrush}" Margin="2,2,3,2" />
             </Grid>
         </Border>
     </Grid>

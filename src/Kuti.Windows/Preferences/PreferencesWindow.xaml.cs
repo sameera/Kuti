@@ -1,4 +1,8 @@
-﻿using Kuti.Windows.QuickActions;
+﻿using Kuti.Windows.Common.VirtualDesktops;
+using Kuti.Windows.Preferences.Themes;
+using Kuti.Windows.QuickActions;
+using Kuti.Windows.VirtualDesktops;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +24,62 @@ namespace Kuti.Windows.Preferences
     /// </summary>
     public partial class PreferencesWindow : Window
     {
-        private readonly Dictionary<string, IPreferencesPage> _loadedPages = new Dictionary<string, IPreferencesPage>();
+        private const int _expectedPageCount = 2;
+        private readonly Dictionary<string, IPreferencesPage> _loadedPages = new Dictionary<string, IPreferencesPage>(_expectedPageCount);
+        private readonly Dictionary<string, Func<IPreferencesPage>> _pageBuilders = new Dictionary<string, Func<IPreferencesPage>>(_expectedPageCount); 
 
         public PreferencesWindow()
         {
             InitializeComponent();
 
-            var shortcutSettingsPage = new HotkeysPage(Runtime.Current.GetInstance<IHotkeyManager>());
-            _loadedPages.Add("shortcutSettings", shortcutSettingsPage);
+            settingsTree.SelectedItemChanged += (_, e) => {
+                var pageTitle = e.NewValue as string;
+                if (pageTitle == null) return;
 
-            contentPane.Content = shortcutSettingsPage;
+                IPreferencesPage page;
+                if (_loadedPages.ContainsKey(pageTitle))
+                {
+                    page = _loadedPages[pageTitle];
+                }
+                else
+                {
+                    var builder = _pageBuilders.GetValueOrDefault(pageTitle)
+                        ?? throw new InvalidOperationException($"'{pageTitle}' is not a known Preference Page");
+                    _loadedPages[pageTitle] = page = builder();
+                }
+
+                contentPane.Content = page;
+                page.OnShow();
+                titleBox.Text = pageTitle;
+            };
+
+            var runtime = Runtime.Current;
+
+            _pageBuilders.Add(
+                "Desktop Assignments", 
+                () => new AppToDesktopMappingsPage(
+                        runtime.GetInstance<IPreferencesDb>(),
+                        runtime.GetInstance<IDesktopsManager>(), 
+                        runtime.GetInstance<ILogger>())
+                );
+
+            _pageBuilders.Add(
+                "Hotkey Settings",
+                () => new HotkeysPage(runtime.GetInstance<IHotkeyManager>()));
+
+            var sortedTitleNames = from pageTitle in _pageBuilders.Keys
+                                   orderby pageTitle
+                                   select pageTitle;
+                                
+            foreach (var page in sortedTitleNames) 
+            {
+                settingsTree.Items.Add(page);
+            }
+
+            if (settingsTree.ItemContainerGenerator.ContainerFromIndex(0) is TreeViewItem defaultPage)
+            {
+                defaultPage.IsSelected = true;
+            }
         }
 
         private void ApplyButton_Click(object sender, RoutedEventArgs e)

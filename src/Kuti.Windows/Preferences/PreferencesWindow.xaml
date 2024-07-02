@@ -13,15 +13,22 @@
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TreeView Grid.Column="0">
-            <TreeViewItem Name="shortcutSettings" Header="Shortcuts" />
-        </TreeView>
-        <GridSplitter Grid.Column="1" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="5" />
-        <ContentControl Grid.Column="2" Name="contentPane" />
-        <Grid  Grid.Row="1" Grid.ColumnSpan="3">
+        
+        <TreeView Grid.Column="0" Grid.RowSpan="2" x:Name="settingsTree" Margin="10" />
+        <GridSplitter Grid.Column="1" Grid.RowSpan="2" 
+                      Background="{Binding ElementName=contentPane, Path=Background}"
+                      ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="5" />
+        <Border Grid.Row="0" Grid.Column="2" BorderThickness="0, 0, 0, 2" BorderBrush="{Binding ElementName=titleBox, Path=Foreground}">
+            <TextBlock Name="titleBox" Text="Settings" FontWeight="Bold" FontSize="24" Margin="10" />
+        </Border>
+        
+        <ContentControl Grid.Row="1" Grid.Column="2" Name="contentPane" Margin="10" />
+        
+        <Grid  Grid.Row="2" Grid.ColumnSpan="3">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button HorizontalAlignment="Right" Margin="5" Padding="10, 3, 10, 3" Click="ApplyButton_Click">Apply</Button>
                 <Button HorizontalAlignment="Right" Margin="3,5,10,5" Padding="10, 3, 10, 3" Click="CancelButton_Click">Cancel</Button>

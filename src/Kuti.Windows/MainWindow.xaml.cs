@@ -32,9 +32,17 @@ public partial class MainWindow : Window
             if (WasPinned) return;
 
             _logger.Debug("Pinning myself to all desktops.");
-            this.Pin();
-            Application.Current.Pin();
-            WasPinned = true;
+
+            try
+            {
+                this.Pin();
+                Application.Current.Pin();
+                WasPinned = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to pin.");
+            }
         };
         
         MouseLeftButtonDown += (_, _) => DragMove();

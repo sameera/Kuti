@@ -7,6 +7,12 @@ using Kuti.Windows.QuickActions;
 using Serilog;
 using System.IO;
 using System.Reflection;
+using Kuti.Windows.Preferences;
+using Kuti.Windows.Common.VirtualDesktops;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Kuti.Windows.Common;
 
 namespace Kuti.Windows;
 
@@ -15,31 +21,37 @@ namespace Kuti.Windows;
 /// </summary>
 public partial class App : Application
 {
+    private static IHost? _host;
+
+    public static T GetRequiredService<T>() where T : class => _host!.Services.GetRequiredService<T>();
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        var appMeta = GetAppMetadata();
-        string logFilePath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            appMeta.Company,
-            appMeta.ProductName,
-            "Logs",
-            "app.log"
-        );
-
-        Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day)
-            .CreateLogger();
-
         AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
             Log.Fatal("Unhandled from {sender}: {@error}", e.ExceptionObject);
 
-        var runtime = new Runtime();
-        runtime.Register<IDesktopsManager>(() => new DesktopsManager());
+        _host = Host.CreateDefaultBuilder()
+            .ConfigureAppConfiguration(c => _ = c.SetBasePath(AppContext.BaseDirectory))
+            .ConfigureServices(services => {
+                services
+                    .AddCommonServices()
+                    .AddSingleton<MainWindow>();
+            })
+            .Build();
+
+        var appMeta = _host.Services.GetRequiredService<AppMetadata>();
+        string basePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            appMeta.Company,
+            appMeta.ProductName
+        );
+
+        var runtime = new Runtime(_host.Services);
         runtime.Register(() => new MainWindow());
-        runtime.Register<IHotkeyManager>(r => new HotkeyManager());
-        runtime.Register(r => Log.Logger);
+        runtime.Register<IHotkeyManager>(() => new HotkeyManager());
+
+        string prefDbPath = Path.Combine(basePath, "preferences.db");
+        runtime.Register<IPreferencesDb>(() => new PreferencesDb(prefDbPath));
 
         Log.Logger.Information("Starting up {version}", Assembly.GetExecutingAssembly().GetName().Version);
         base.OnStartup(e);
@@ -54,14 +66,6 @@ public partial class App : Application
         mainWindow.Loaded += (_, _) => runtime.GetInstance<IHotkeyManager>().Initialize(mainWindow);
         Log.Logger.Debug("Opening the MainWindow.");
         mainWindow.Show();
-    }
-
-    private AppMetadata GetAppMetadata()
-    {
-        var assembly = Assembly.GetExecutingAssembly();
-        string? company = assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
-        string? productName = assembly.GetCustomAttribute<AssemblyProductAttribute>()?.Product;
-        return new AppMetadata(productName, company);
     }
 
     private void SetAppTheme()

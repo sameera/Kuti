@@ -6,15 +6,17 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <AssemblyVersion>0.1.1.000</AssemblyVersion>
-    <FileVersion>0.1.1.000</FileVersion>
+    <AssemblyVersion>0.1.1.003</AssemblyVersion>
+    <FileVersion>0.1.1.003</FileVersion>
     <Company>Codoxide.com</Company>
     <Product>Kuti</Product>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Serilog" Version="3.1.1" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +30,7 @@
       <CopyLocalSatelliteAssemblies>True</CopyLocalSatelliteAssemblies>
       <EmbedInteropTypes></EmbedInteropTypes>
     </ProjectReference>
+    <ProjectReference Include="..\Kuti.Windows.Common\Kuti.Windows.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

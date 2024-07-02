@@ -1,4 +1,5 @@
-﻿using Kuti.Windows.VirtualDesktops;
+﻿using Kuti.Windows.Common.VirtualDesktops;
+using Kuti.Windows.VirtualDesktops;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -26,6 +27,8 @@ namespace Kuti.Windows.QuickActions
 
             Loaded += QuicActionsWindow_Loaded;
             KeyUp += QuicActionsWindow_KeyUp;
+
+            menuButton.Click += (_, _) => ShowDesktopPicker();
 
             PreviewKeyDown += QuicActionsWindow_PreviewKeyDown;
         }
