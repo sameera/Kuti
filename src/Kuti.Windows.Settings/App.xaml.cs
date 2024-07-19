@@ -3,8 +3,6 @@ using Kuti.Windows.Settings.Pages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Configuration;
-using System.Data;
 using System.Windows;
 using Wpf.Ui;
 

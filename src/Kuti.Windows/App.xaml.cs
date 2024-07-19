@@ -1,8 +1,6 @@
-﻿using Kuti.Windows.VirtualDesktops;
-using Windows.UI;
+﻿using Windows.UI;
 using System.Windows;
 using Windows.UI.ViewManagement;
-using WindowsDesktop;
 using Kuti.Windows.QuickActions;
 using Serilog;
 using System.IO;
@@ -39,11 +37,10 @@ public partial class App : Application
             })
             .Build();
 
-        var appMeta = _host.Services.GetRequiredService<AppMetadata>();
         string basePath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            appMeta.Company,
-            appMeta.ProductName
+            Config.Developer,
+            Config.ProductName
         );
 
         var runtime = new Runtime(_host.Services);
@@ -60,7 +57,7 @@ public partial class App : Application
         SetAppTheme();
 
         Log.Logger.Debug("Configuring the DesktopManager");
-        runtime.GetInstance<IDesktopsManager>().Configure(appMeta);
+        runtime.GetInstance<IDesktopsManager>().Configure();
 
         var mainWindow = runtime.GetInstance<MainWindow>();
         mainWindow.Loaded += (_, _) => runtime.GetInstance<IHotkeyManager>().Initialize(mainWindow);

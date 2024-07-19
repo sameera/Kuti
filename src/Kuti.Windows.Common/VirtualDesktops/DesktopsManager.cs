@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using WindowsDesktop;
-using WindowsDesktop.Properties;
+﻿using WindowsDesktop;
 
 namespace Kuti.Windows.Common.VirtualDesktops
 {
@@ -17,7 +9,7 @@ namespace Kuti.Windows.Common.VirtualDesktops
 
         event EventHandler<VirtualDesktopChangedEventArgs>? CurrentChanged;
 
-        void Configure(AppMetadata appMetadata);
+        void Configure();
 
         IEnumerable<VirtualDesktop> VirtualDesktops { get; }
 
@@ -52,12 +44,12 @@ namespace Kuti.Windows.Common.VirtualDesktops
 
         public IEnumerable<VirtualDesktop> VirtualDesktops => VirtualDesktop.GetDesktops();
 
-        public void Configure(AppMetadata appMetadata)
+        public void Configure()
         {
             var assemblyDirPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                appMetadata.Company,
-                appMetadata.ProductName,
+                Config.Developer,
+                Config.ProductName,
                 "assemblies"
             );
 

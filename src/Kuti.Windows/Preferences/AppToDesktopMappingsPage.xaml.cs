@@ -1,5 +1,4 @@
-﻿using Kuti.Windows.VirtualDesktops;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Diagnostics;
 using Serilog;
 using System.Windows.Interop;
@@ -10,9 +9,7 @@ using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 
 using static Kuti.Windows.WindowsAPI.Shell32;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
-using System.Text.Json.Nodes;
 using System.Text.Json;
 using Kuti.Windows.Common.VirtualDesktops;
 

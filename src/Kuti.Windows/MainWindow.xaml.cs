@@ -1,5 +1,9 @@
-﻿using Kuti.Windows.Preferences;
+﻿using Kuti.Windows.Common;
+using Kuti.Windows.Preferences;
 using Serilog;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Interop;
 using WindowsDesktop;
@@ -108,5 +112,36 @@ public partial class MainWindow : Window
     }
 
     private void MenuItemQuit_Click(object sender, RoutedEventArgs e) => Close();
-    private void settingsMenuItem_Click(object sender, RoutedEventArgs e) => new PreferencesWindow().ShowDialog();
+    private void settingsMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        var procInfo = new ProcessStartInfo() {
+            WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+            FileName = string.Concat(Config.ExecutableName + ".Settings.exe")
+        };
+
+        if (procInfo.WorkingDirectory == null) throw new InvalidOperationException("Unable to resolve the Assembly location");
+
+        string fullPath = Path.Combine(procInfo.WorkingDirectory, procInfo.FileName);
+
+        if (!File.Exists(fullPath))
+        {
+            _logger.Warning(string.Concat(fullPath, " could not be found"));
+            MessageBox.Show("We are unable to show the Settings configuration. "
+                + "The requried component my not have been installed correctly. "
+                + "Please try reinstalling the applicaiton.",
+                "The Settings Editor was not found", MessageBoxButton.OK, MessageBoxImage.Warning
+            );
+            return;
+        }
+
+        try
+        {
+            // Start the app
+            var settingsApp = Process.Start(procInfo);
+        }
+        catch (Exception ex)
+        {
+            _logger.Warning(ex, "Settings application caused an error.");
+        }
+    }
 }

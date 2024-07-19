@@ -1,6 +1,5 @@
 ﻿using Kuti.Windows.WindowsAPI;
 using Serilog;
-using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;

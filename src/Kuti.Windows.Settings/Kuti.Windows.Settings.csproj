@@ -10,8 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
     <PackageReference Include="wpf-ui" Version="3.0.4" />
   </ItemGroup>
 
@@ -23,5 +25,9 @@
   <ItemGroup>
     <Folder Include="ProcessManagement\" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="echo $(OutputDir)&#xD;&#xA;copy $(OutDir)* $(ProjectDir)..\Kuti.Windows\$(OutputPath)\*" />
+  </Target>
 
 </Project>
