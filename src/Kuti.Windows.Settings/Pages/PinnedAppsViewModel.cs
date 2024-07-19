@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using static Kuti.Windows.Common.WindowsAPI.Shell32;
 using System.Windows.Input;
 using Wpf.Ui.Input;
+using System.Linq;
 
 namespace Kuti.Windows.Settings.Pages
 {
@@ -16,7 +17,7 @@ namespace Kuti.Windows.Settings.Pages
     {
         private readonly IDesktopsManager _desktopsManager;
 
-        public Desktop[] Desktops { get; private set; } = [];
+        public PinnableDesktop[] Desktops { get; private set; } = [];
 
         public ICommand PinningCommand { get; }
 
@@ -31,11 +32,13 @@ namespace Kuti.Windows.Settings.Pages
 
         public void RefreshModel()
         {
-            var desktops = _desktopsManager.VirtualDesktops.ToDictionary(vd => vd.Id, vd => new Desktop(vd.Name, vd.Id));
+            var desktops = _desktopsManager.VirtualDesktops.ToDictionary(vd => vd.Id, vd => new PinnableDesktop(vd.Name, vd.Id));
 
             // Add a "virtual" virtual desktop for apps that are available on all desktops
-            var allDesktop = new Desktop("(All Desktops)", Guid.Empty);
+            var allDesktop = new PinnableDesktop("(All Desktops)", Guid.Empty);
             desktops.Add(Guid.Empty, allDesktop);
+
+            var processesByDesktop = desktops.Keys.ToDictionary(desktopId => desktopId, _ => new List<PinnableProcess>());
 
             var foregroundApps = from p in Process.GetProcesses()
                                  where p.MainWindowHandle != 0 && !string.IsNullOrEmpty(p.MainWindowTitle) && !IsSystemProcess(p)
@@ -56,11 +59,15 @@ namespace Kuti.Windows.Settings.Pages
 
                 if (desktops.TryGetValue(desktopId, out var targetDesktop))
                 {
-                    targetDesktop.Processes.Add(new PinnableProcess(process.MainWindowTitle, exePath, GetAppIcon(exePath)));
+                    processesByDesktop[desktopId].Add(new PinnableProcess(process.MainWindowTitle, exePath, GetAppIcon(exePath)));
                 }
             }
 
-            Desktops = desktops.Values.ToArray();
+            Desktops = processesByDesktop.Select(kv => {
+                var desktop = desktops[kv.Key];
+                desktop.Processes = kv.Value;
+                return desktop;
+            }).ToArray();
         }
 
         public void PinningIcon_MouseDown(object source, MouseButtonEventArgs e)
@@ -101,13 +108,6 @@ namespace Kuti.Windows.Settings.Pages
             {
                 return true;
             }
-        }
-
-        public record Desktop(string Name, Guid Id)
-        {
-            public List<PinnableProcess> Processes { get; } = [];
-
-            public override string ToString() => Name;
         }
     }
 }
