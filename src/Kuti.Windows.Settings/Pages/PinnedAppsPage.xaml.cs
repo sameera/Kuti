@@ -1,8 +1,5 @@
 ﻿using Kuti.Windows.Common.VirtualDesktops;
-using Microsoft.Extensions.Logging;
 using System.Windows.Controls;
-using System.Windows.Media;
-using Wpf.Ui.Controls;
 
 namespace Kuti.Windows.Settings.Pages
 {

@@ -1,30 +1,32 @@
 ﻿using Kuti.Windows.Common.VirtualDesktops;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Interop;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using static Kuti.Windows.Common.WindowsAPI.Shell32;
+using System.Windows.Input;
+using Wpf.Ui.Input;
 
 namespace Kuti.Windows.Settings.Pages
 {
-    public class PinnedAppsViewModel
+    public partial class PinnedAppsViewModel
     {
         private readonly IDesktopsManager _desktopsManager;
 
         public Desktop[] Desktops { get; private set; } = [];
 
+        public ICommand PinningCommand { get; }
+
         public PinnedAppsViewModel(IDesktopsManager desktopsManager)
         {
             _desktopsManager = desktopsManager;
+
+            PinningCommand = new RelayCommand<PinnableProcess>(process => {
+                if (process != null) process.IsPinned = !process.IsPinned;
+            });
         }
 
         public void RefreshModel()
@@ -59,6 +61,11 @@ namespace Kuti.Windows.Settings.Pages
             }
 
             Desktops = desktops.Values.ToArray();
+        }
+
+        public void PinningIcon_MouseDown(object source, MouseButtonEventArgs e)
+        {
+
         }
 
         private static ImageSource? GetAppIcon(string exePath)
@@ -100,11 +107,6 @@ namespace Kuti.Windows.Settings.Pages
         {
             public List<PinnableProcess> Processes { get; } = [];
 
-            public override string ToString() => Name;
-        }
-
-        public record PinnableProcess(string Name, string Path, ImageSource? Icon = null)
-        {
             public override string ToString() => Name;
         }
     }

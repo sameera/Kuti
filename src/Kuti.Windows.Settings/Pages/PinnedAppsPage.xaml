@@ -13,31 +13,64 @@
       Title="PinnedAppsPage">
 
     <Grid Margin="0,0,0,24">
-        <ItemsControl Name="_desktops" ItemsSource="{Binding Desktops}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Margin="35 0" TextWrapping="Wrap">
+            Click on the pin icon to the right to pin an application to the Virtual Desktop that it's
+            currently on.
+        </TextBlock>
+        <ItemsControl Grid.Row="1" Name="_desktops" ItemsSource="{Binding Desktops}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <ui:CardExpander IsExpanded="True" Margin="30, 10">
                         <ui:CardExpander.Header>
                             <TextBlock Text="{Binding Name}" />
                         </ui:CardExpander.Header>
-                        <ListBox ItemsSource="{Binding Processes}">
-                            <ListBox.ItemTemplate>
+                        <ItemsControl ItemsSource="{Binding Processes}">
+                            <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Grid.Column="0"  Source="{Binding Icon}" Margin="2, 0, 0, 5" />
-                                        <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="15, 0, 0, 2" />
-                                        <ToggleButton Grid.Column="2">
-                                            <ui:SymbolIcon Symbol="Pin20"/>
-                                        </ToggleButton>
-                                    </Grid>
+                                    <Border x:Name="ItemBorder" Margin="-2 4 0 4" CornerRadius="5" Background="Transparent">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Column="0" Source="{Binding Icon}" Margin="5, 3, 0, 5" VerticalAlignment="Center" />
+                                            <TextBlock x:Name="ItemText" Grid.Column="1" Text="{Binding Name}" Margin="15, 0, 0, 2" VerticalAlignment="Center" />
+                                            <ui:SymbolIcon x:Name="ItemPinIcon" Grid.Column="2" VerticalAlignment="Center">
+                                                <ui:SymbolIcon.Style>
+                                                    <Style TargetType="ui:SymbolIcon">
+                                                        <Setter Property="Symbol" Value="PinOff20" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsPinned}" Value="True">
+                                                                <Setter Property="Symbol" Value="Pin20" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </ui:SymbolIcon.Style>
+                                                <ui:SymbolIcon.InputBindings>
+                                                    <MouseBinding Command="{Binding DataContext.PinningCommand, RelativeSource={RelativeSource AncestorType=Page}}" 
+                                                                    CommandParameter="{Binding}" 
+                                                                    MouseAction="LeftClick"/>
+                                                </ui:SymbolIcon.InputBindings>
+                                            </ui:SymbolIcon>
+                                        </Grid>
+                                    </Border>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsPinned}" Value="True">
+                                            <Setter TargetName="ItemBorder" Property="Background" Value="{ui:ThemeResource TextFillColorTertiaryBrush}"/>
+                                            <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{ui:ThemeResource TextFillColorTertiaryBrush}"/>
+                                            <Setter TargetName="ItemText" Property="Foreground" Value="{ui:ThemeResource TextFillColorInverseBrush}" />
+                                            <Setter TargetName="ItemPinIcon" Property="Foreground" Value="{ui:ThemeResource TextFillColorInverseBrush}" />
+                                            <Setter TargetName="ItemBorder" Property="BorderThickness" Value="1"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </ui:CardExpander>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
