@@ -17,13 +17,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDesktop", "contrib\V
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDesktop.WPF", "contrib\VirtualDesktop\src\VirtualDesktop.WPF\VirtualDesktop.WPF.csproj", "{2A02032D-D993-46AA-AFF3-7715ACFCB885}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuti.Windows.Settings", "src\Kuti.Windows.Settings\Kuti.Windows.Settings.csproj", "{755FAFBE-AD03-4308-89F9-59479A648340}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuti.Windows.Settings", "src\Kuti.Windows.Settings\Kuti.Windows.Settings.csproj", "{755FAFBE-AD03-4308-89F9-59479A648340}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuti.Windows.Settings.Tests", "tests\Kuti.Windows.Settings\Kuti.Windows.Settings.Tests.csproj", "{E0812CD8-BAB1-4965-A06C-505C23C53BBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuti.Windows.Settings.Tests", "tests\Kuti.Windows.Settings\Kuti.Windows.Settings.Tests.csproj", "{E0812CD8-BAB1-4965-A06C-505C23C53BBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuti.Windows.Common", "src\Kuti.Windows.Common\Kuti.Windows.Common.csproj", "{84176F59-3ADC-42A2-973D-32FFA3C24783}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuti.Windows.Common", "src\Kuti.Windows.Common\Kuti.Windows.Common.csproj", "{84176F59-3ADC-42A2-973D-32FFA3C24783}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuti.Windows.Common.Tests", "tests\Kuti.Windows.Common\Kuti.Windows.Common.Tests.csproj", "{4E3157FC-CC77-4830-9B24-BC1997D5D8FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuti.Windows.Common.Tests", "tests\Kuti.Windows.Common\Kuti.Windows.Common.Tests.csproj", "{4E3157FC-CC77-4830-9B24-BC1997D5D8FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F88D1787-F144-4543-82D4-B8C041A5F6B3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

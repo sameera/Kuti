@@ -1,8 +1,9 @@
 ﻿using Kuti.Windows.Common;
-using Kuti.Windows.Settings.Pages;
+using Kuti.Windows.Settings.Pages.PinnedApps;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 using System.Windows;
 using Wpf.Ui;
 
@@ -24,6 +25,29 @@ public partial class App : Application
                 .AddCommonServices()
                 .AddSingleton<INavigationService, NavigationService>()
                 .AddSingleton<MainWindow>()
+
+                .AddSingleton<IPreferencesRepository, PreferencesRepository>()
+                .AddSingleton<IPinnedAppsRepository, PinnedAppsRepository>()
+
+                .AddSingleton<IRepository>(s => s.GetRequiredService<IPreferencesRepository>())
+                .AddSingleton<IRepository>(s => s.GetRequiredService<IPinnedAppsRepository>())
+
+                .AddSingleton<IDatabase>(s => {
+                    string basePath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        Config.Developer,
+                        Config.ProductName
+                    );
+                    Directory.CreateDirectory(basePath);
+
+                    string dbPath = Path.Combine(basePath, "settings.db");
+
+                    return new Database(
+                        dbPath, 
+                        PreferencesRepository.SetupScripts.
+                            Concat(PinnedAppsRepository.SetupScripts)
+                    );
+                })
 
                 // Settings Pages
                 .AddSingleton<PinnedAppsPage>()

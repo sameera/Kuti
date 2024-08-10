@@ -1,7 +1,6 @@
 ﻿using Kuti.Windows.Common.VirtualDesktops;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using System.Reflection;
 
 namespace Kuti.Windows.Common;
 

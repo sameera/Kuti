@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kuti.Windows.Settings"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        xmlns:pages="clr-namespace:Kuti.Windows.Settings.Pages"
+        xmlns:pinnedApps="clr-namespace:Kuti.Windows.Settings.Pages.PinnedApps"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1000">
+        Title="MainWindow" Height="850" Width="1200">
 
     <ui:NavigationView x:Name="_navigationView" IsBackButtonVisible="Collapsed" OpenPaneLength="275
                        " PaneTitle="Settings">
@@ -27,27 +27,20 @@
                 FontWeight="DemiBold" />
         </ui:NavigationView.Header>
         <ui:NavigationView.MenuItems>
-            <ui:NavigationViewItem Content="Pinned Apps" TargetPageType="{x:Type pages:PinnedAppsPage}">
+            <ui:NavigationViewItem Content="Pinned Apps" TargetPageType="{x:Type pinnedApps:PinnedAppsPage}">
                 <ui:NavigationViewItem.Icon>
                     <ui:SymbolIcon Symbol="Home24" />
                 </ui:NavigationViewItem.Icon>
             </ui:NavigationViewItem>
-            <!--
-        <ui:NavigationViewItem Content="Data" TargetPageType="{x:Type pages:DataPage}">
-            <ui:NavigationViewItem.Icon>
-                <ui:SymbolIcon Symbol="DataHistogram24" />
-            </ui:NavigationViewItem.Icon>
-        </ui:NavigationViewItem>
-        -->
         </ui:NavigationView.MenuItems>
+        <!--
         <ui:NavigationView.FooterMenuItems>
-            <!--
-        <ui:NavigationViewItem Content="Settings" TargetPageType="{x:Type pages:SettingsPage}">
-            <ui:NavigationViewItem.Icon>
-                <ui:SymbolIcon Symbol="Settings24" />
-            </ui:NavigationViewItem.Icon>
-        </ui:NavigationViewItem>
-        -->
+            <ui:NavigationViewItem Content="Settings" TargetPageType="{x:Type pages:SettingsPage}">
+                <ui:NavigationViewItem.Icon>
+                    <ui:SymbolIcon Symbol="Settings24" />
+                </ui:NavigationViewItem.Icon>
+            </ui:NavigationViewItem>
         </ui:NavigationView.FooterMenuItems>
+        -->
     </ui:NavigationView>
 </Window>

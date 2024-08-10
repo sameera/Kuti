@@ -1,5 +1,7 @@
-﻿using Kuti.Windows.Settings.Pages;
+﻿using Kuti.Windows.Settings.Pages.PinnedApps;
 using System.Windows;
+using WinRT;
+using Wpf.Ui.Controls;
 
 namespace Kuti.Windows.Settings;
 

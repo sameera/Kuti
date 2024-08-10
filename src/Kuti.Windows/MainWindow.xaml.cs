@@ -1,5 +1,4 @@
 ﻿using Kuti.Windows.Common;
-using Kuti.Windows.Preferences;
 using Serilog;
 using System.Diagnostics;
 using System.IO;
